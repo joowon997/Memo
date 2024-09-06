@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class UserController {
 
-
 	@GetMapping("/join-view")
 	public String inputJoin() {
 		return "user/join";
