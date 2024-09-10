@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layouts/default}">
+		
+		<section layout:fragment="contents" class="contents d-flex justify-content-center">
+			<div class="post-box my-5">
+				<h1 class="text-center mt-3">메모 입력</h1>
+				<input type="text" placeholder="제목을 입력하세요" class="form-control mt-3" id="inputTitle">
+				<textarea rows="10" placeholder="내용을 입력하세요" class="form-control mt-2" id="inputContents"></textarea>
+				<input type="file" class="mt-2">
+				<div class="d-flex justify-content-between mt-3">
+					<a class="btn btn-secondary" href="/memo/post/list-view">목록으로</a>
+					<button type="button" class="btn btn-secondary" id="saveBtn">저장</button>
+				</div>
+			</div>
+		</section>
+		
+		<script layout:fragment="script">
+			$(document).ready(function(){
+				
+				$("#saveBtn").on("click", function(){
+					
+					//변수 설정
+					let title = $("#inputTitle").val();
+					let contents = $("#inputContents").val();
+					
+					// 유효성 검사
+					if(title == ""){
+						alert("제목을 입력하세요");
+						return;
+					}
+					if(contents == ""){
+						alert("메모를 입력하세요");
+						return;
+					}
+					
+					// ajax 통신
+					$.ajax({
+						type:"post"
+						, url: "/memo/post/create"
+						, data: {"title":title, "contents":contents}
+						, success:function(data){
+							if(data.result == "success"){
+								location.href = "/memo/post/list-view";
+							} else{
+								alert("메모 입력 실패!!");
+							}
+						}
+						, erorr: function(){
+							alert("메모 입력 에러!!");
+						}
+					})
+					
+					
+				});
+				
+				
+			});
+		</script>
+
+</html>
