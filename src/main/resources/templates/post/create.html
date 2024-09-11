@@ -8,7 +8,7 @@
 				<h1 class="text-center mt-3">메모 입력</h1>
 				<input type="text" placeholder="제목을 입력하세요" class="form-control mt-3" id="inputTitle">
 				<textarea rows="10" placeholder="내용을 입력하세요" class="form-control mt-2" id="inputContents"></textarea>
-				<input type="file" class="mt-2">
+				<input type="file" class="mt-2" id="inputFile">
 				<div class="d-flex justify-content-between mt-3">
 					<a class="btn btn-secondary" href="/memo/post/list-view">목록으로</a>
 					<button type="button" class="btn btn-secondary" id="saveBtn">저장</button>
@@ -24,6 +24,8 @@
 					//변수 설정
 					let title = $("#inputTitle").val();
 					let contents = $("#inputContents").val();
+				
+					let file = $("#inputFile")[0].files[0];
 					
 					// 유효성 검사
 					if(title == ""){
@@ -36,10 +38,19 @@
 					}
 					
 					// ajax 통신
+					
+					let formData = new FormData();
+					formData.append("title", title);
+					formData.append("contents", contents);
+					formData.append("imageFile", file);
+					
 					$.ajax({
 						type:"post"
 						, url: "/memo/post/create"
-						, data: {"title":title, "contents":contents}
+						, data: formData
+						, enctype: "multipart/form-data" // 파일 업로드 필수
+						, processData:false // 파일 업로드 필수
+						, contentType:false // 파일 업로드 필수
 						, success:function(data){
 							if(data.result == "success"){
 								location.href = "/memo/post/list-view";

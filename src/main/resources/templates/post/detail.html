@@ -8,13 +8,13 @@
 				<h1 class="text-center mt-3">메모 상세</h1>
 				<input type="text" placeholder="제목을 입력하세요" class="form-control mt-3" id="inputTitle" th:value="${memo.title}">
 				<textarea rows="10" placeholder="내용을 입력하세요" class="form-control mt-2" id="inputContents" th:text="${memo.contents}">메모 내용입니다.</textarea>
-
+				<img alt="메모 이미지" th:src="${memo.imagePath}">
+				<input type="file" class="mt-2">
 				<div class="d-flex justify-content-between mt-3">
 					<button type="button" class="btn btn-danger">삭제</button>
-					
 					<div>
-					<a class="btn btn-secondary" href="/memo/post/list-view">목록으로</a>
-					<button type="button" class="btn btn-secondary" id="saveBtn">수정</button>
+						<a class="btn btn-secondary" href="/memo/post/list-view">목록으로</a>
+						<button type="button" class="btn btn-secondary" id="saveBtn">수정</button>
 					</div>
 				</div>
 			</div>
