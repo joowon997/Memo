@@ -19,6 +19,42 @@ public class PostService {
 		this.postRepository = postRepository;
 	}
 	
+	// 메모 삭제
+	public boolean deletePost(int id){
+		Optional<Post> optionalPsot = postRepository.findById(id);
+	
+		Post post = optionalPsot.orElse(null);
+		
+		if(post != null) {
+			FileManager.removeFile(post.getImagePath());
+			postRepository.delete(post);
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	
+	// 메모 수정
+	public Post updatePost(int id, String title, String contents){
+		
+		Optional<Post> optionalPost = postRepository.findById(id);
+		
+		Post post = optionalPost.orElse(null);
+		
+		if (post != null) {
+			Post updatePost = post.toBuilder()
+								.title(title)
+								.contents(contents)
+								.build();
+			return postRepository.save(updatePost);
+		} else {
+			return null;
+		}
+		
+	}
+	
+	// 메모 추가
 	public Post addPost(int userId, String title, String contents, MultipartFile file){
 		
 		String urlPath = FileManager.saveFile(userId, file);

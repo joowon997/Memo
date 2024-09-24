@@ -58,4 +58,42 @@ public class FileManager {
 		
 		return "/images" + directoryName + "/" + file.getOriginalFilename();
 	}
+	
+	// 파일 삭제
+	public static boolean removeFile(String filePath){
+		
+		if (filePath == null) {
+			return false;
+		}
+		
+		String fullFilePath = FILE_UPLOAD_PATH + filePath.replace("/image", "");
+		
+		Path path = Paths.get(fullFilePath);
+		Path directoroyPath = path.getParent();
+		
+		// 파일이 존재하는지 확인
+		if(Files.exists(path) && Files.exists(directoroyPath)) {
+			try {
+				Files.delete(path);
+				Files.delete(directoroyPath);
+			} catch (IOException e) {
+				return false;
+			}
+			return true;
+		}else {
+			return false;
+		}
+		//"D:\\jung\\springProject\\upload\\memo/2_8120980";
+		// 폴더(디렉토리) 삭제
+//		path = path.getParent();
+//		
+//		if(Files.exists(path)) {
+//			try {
+//				Files.delete(path);
+//			} catch (IOException e) {
+//				return false;
+//			}
+//		}
+		
+	}
 }

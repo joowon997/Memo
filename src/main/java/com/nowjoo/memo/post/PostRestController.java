@@ -3,7 +3,9 @@ package com.nowjoo.memo.post;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,42 @@ public class PostRestController {
 	
 	public PostRestController(PostService postService) {
 		this.postService = postService;
+	}
+	
+	// 메모 삭제
+	@DeleteMapping("/delete")
+	public Map<String, String> deletePost(
+			@RequestParam("id") int id){
+		
+		Map<String, String> resultMap = new HashMap<>();
+		
+		if (postService.deletePost(id)) {
+			resultMap.put("result", "success");
+		} else {
+			resultMap.put("result", "fail");
+		}
+
+		return resultMap;
+	}
+	
+	// 메모 수정
+	@PutMapping("/update")
+	public Map<String, String> updateMemo(
+			@RequestParam("id") int id
+			, @RequestParam("title") String title
+			, @RequestParam("contents") String contents){
+		
+		Post post = postService.updatePost(id, title, contents);
+		
+		Map<String, String> resultMap = new HashMap<>();
+		
+		if (post != null) {
+			resultMap.put("result", "success");
+		} else {
+			resultMap.put("result", "fail");
+		}
+
+		return resultMap;
 	}
 	
 	// 메모생성
